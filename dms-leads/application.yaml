@@ -1,0 +1,68 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/dms/leads
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1433;databaseName=dms-poc
+    username: sa
+    password: Test#123
+    hikari.connection-timeout: 50000
+    hikari.idle-timeout: 300000
+    hikari.max-lifetime: 900000
+    hikari.maximum-pool-size: 10
+    hikari.minimum-idle: 10
+    hikari.pool-name: DMSPoolLead
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.SQLServer2012Dialect
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  banner:
+    location: classpath:static/banner/banner.txt
+  jms:
+    servicebus:
+      connection-string: Endpoint=sb://dms-servicebus-namespace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fwg90CPtIf0QLgsZdmz16R6N+4b2hCNqbqTmgydF2uI=
+      topic-client-id: dms-poc-sample-topic
+      idle-timeout: 1800000
+      pricing-tier: standard
+    dms:
+      logger:
+        topic-name: dms-poc-sample-topic
+        subscription-name: dms-poc-log-sub
+      auto-assign-lead:
+        topic-name: dms-mq-mq-topic
+        subscription-name: dms-mq-mq-sub
+  redis:
+    host: dmscache-cache.redis.cache.windows.net
+    port: 443
+    password:
+  application:
+    name: Lead-Service
+
+#Azure Blob Storage
+azure:
+  blob:
+    storage:
+      connection-string: DefaultEndpointsProtocol=https;AccountName=dmsdevsblobstorage;AccountKey=U62iQLEV7rzFjxhEXLGFEvc4um5F7YKpQIGBRBWOhYHFmww+GJj6TekEv+ht7cT3hTYQ7FD0sOFbzpIErdfrhg==;EndpointSuffix=core.windows.net
+      access-key: U62iQLEV7rzFjxhEXLGFEvc4um5F7YKpQIGBRBWOhYHFmww+GJj6TekEv+ht7cT3hTYQ7FD0sOFbzpIErdfrhg==
+      container-name: dms-dev-blob-storage-rco
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 60000
+        readTimeout: 10000
+
+etopmark:
+  url: https://58.26.8.248/dms-ws
+  token: ZG1zX3N5c3RlbTpkbXNAMzI0NDE=
+dmsWeb:
+  baseUrl: https://dmswebqa.z23.web.core.windows.net/
