@@ -5,13 +5,13 @@ server:
 spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://localhost:1433;databaseName=dms-poc
+    url: jdbc:sqlserver://12.0.1.6:1433;databaseName=dms-leads
     username: sa
-    password: Test#123
+    password: 6NCvVSrNUS3pkkWV
     hikari.connection-timeout: 50000
     hikari.idle-timeout: 300000
     hikari.max-lifetime: 900000
-    hikari.maximum-pool-size: 10
+    hikari.maximum-pool-size: 1000
     hikari.minimum-idle: 10
     hikari.pool-name: DMSPoolLead
   jackson:
@@ -29,40 +29,53 @@ spring:
     location: classpath:static/banner/banner.txt
   jms:
     servicebus:
-      connection-string: Endpoint=sb://dms-servicebus-namespace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fwg90CPtIf0QLgsZdmz16R6N+4b2hCNqbqTmgydF2uI=
-      topic-client-id: dms-poc-sample-topic
+      connection-string: Endpoint=sb://dms-servicebusuat-namespace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=N82fKKz99HEZET8GstpqzKnHvJow9SERItPVGVNWkg4=
+      topic-client-id: dms-email-topic
       idle-timeout: 1800000
       pricing-tier: standard
     dms:
-      logger:
-        topic-name: dms-poc-sample-topic
-        subscription-name: dms-poc-log-sub
-      auto-assign-lead:
-        topic-name: dms-mq-mq-topic
-        subscription-name: dms-mq-mq-sub
+      announcement:
+        topic-name: dms-announcement-topic
+        subscription-name: dms-announcement-sub
+      notification:
+        topic-name: dms-notification-topic
+        subscription-name: dms-notification-sub
+      email:
+        topic-name: dms-email-topic
+        subscription-name: dms-email-sub
+      sync:
+        queue-name: dms-data-sync-in-q
   redis:
-    host: dmscache-cache.redis.cache.windows.net
-    port: 443
-    password:
-  application:
-    name: Lead-Service
+    host: dmscacheuat-cache.redis.cache.windows.net
+    port: 6380
+    password: dY4xkdgljh1Cpfa+tKKzBYjef2M7pJhfD+tCRISNkNk=
+    ssl: true
 
 #Azure Blob Storage
 azure:
   blob:
     storage:
-      connection-string: DefaultEndpointsProtocol=https;AccountName=dmsdevsblobstorage;AccountKey=U62iQLEV7rzFjxhEXLGFEvc4um5F7YKpQIGBRBWOhYHFmww+GJj6TekEv+ht7cT3hTYQ7FD0sOFbzpIErdfrhg==;EndpointSuffix=core.windows.net
-      access-key: U62iQLEV7rzFjxhEXLGFEvc4um5F7YKpQIGBRBWOhYHFmww+GJj6TekEv+ht7cT3hTYQ7FD0sOFbzpIErdfrhg==
-      container-name: dms-dev-blob-storage-rco
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 60000
-        readTimeout: 10000
+      connection-string: DefaultEndpointsProtocol=https;AccountName=dmsuatstorage;AccountKey=oIxeSYrQ46IMybfDYIcS6zdNEOGxClgaeGKgJFzmbTHtAjqxlFLWwHs4/WJe0hPXbCn+9enRXeMRdH4c1faAeg==;EndpointSuffix=core.windows.net
+      access-key: oIxeSYrQ46IMybfDYIcS6zdNEOGxClgaeGKgJFzmbTHtAjqxlFLWwHs4/WJe0hPXbCn+9enRXeMRdH4c1faAeg==
+      container-name: dms-uat-setup
+servers:
+  url: http://localhost:8080/api/dms/leads
+dmslead:
+  username: adminuser
+  password: Init@11117
+  url: https://my335108.crm.ondemand.com/sap/c4c/odata/v1/c4codataapi
 
+tcap:
+  username: ecms182616
+  password: 476037573C5C403D8A7FD3728D4B1C556A1BC917A677D9EFA56B8E96E3F1F2F9D8AF509ADD4DA3AF82F3013DE1A59393CE101B7B0DA1749123427A28694BF1FDF740FA3BE714C9EC5A74CA0E889796B336E4D0484A417324AF0344B882D6C63405AE1700AC592FFD548D67F9BBF5469CE213DB26338F84BFFF1D9716D8ACA9B39768F90C0840EAC5676DBE717BCC71F2B35DD950F9CE568267128C8E3959502B436BB40D9A04A76B65011D7FED7880604C62F5AEEE8D1F66DF5294F90A4C5B2A255D143AE3F27D383FC6767F275C524E1331326C837F721F9D4A34C8EB12382B1B160ED8BA6E820949957822170D05C2CF7B89E33C58FAFD4A29FA1D8050B653256BACD399BEEAF4D6712B3584AEB387E665C233E706382DC6A5E5D75216F688858F0FDECE58382CE26FEF20E4EB1FF9EBD62A9F8D66FC462DE24D5A7141F6C9B122D4A66D8AC1922FD0D17FA3D40BA7F105A5F5A9BB518731970E67D74D207E7976340A62CC194AF40BB9CD88A65AC4E19C206CA50404C5CA7C125544B9DEAC5EB1253B6A56CE5F11D2130C00E4EEDA22BC67DFE1DF8F5868503E1A71B2C694100E839AFE93F9462A480336419001C3393979905E90216B0D68B599E6DB94C8D1D9E4F760A2B3127CF63426FAF91CED81796885B632B7DBA369F0AE8DE7B53ED1F451D69445143A2065BC7B6AEC8CABF19FFB63ECA9663937103F5381639391
+  url: https://www.itms1813.com:8443/eCMS/api/GetFinInfo.aspx
+  secret-key: 54861FE1D5367B610CB2041C904A87ACB79D9B601CD2F58B1EB2A41411F69EC103AA0E9FA593C6A3C50FCFB260EA797B0026A1782902F5B7A39181EB978C0D80
+dmsMaster:
+  baseUrl: https://dmsuat.simbiotiktech.com/api/dms/master/v1
+dmsAdmin:
+  baseUrl: https://dmsuat.simbiotiktech.com/api/dms/admin/v1
 etopmark:
   url: https://58.26.8.248/dms-ws
   token: ZG1zX3N5c3RlbTpkbXNAMzI0NDE=
 dmsWeb:
-  baseUrl: https://dmswebqa.z23.web.core.windows.net/
+  baseUrl: https://dmsuatweb.z23.web.core.windows.net/
