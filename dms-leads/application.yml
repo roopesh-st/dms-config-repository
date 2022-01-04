@@ -7,7 +7,6 @@ spring:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://12.0.1.6:1433;databaseName=dms-leads
     username: sa
-    password: 6NCvVSrNUS3pkkWV
     hikari.connection-timeout: 50000
     hikari.idle-timeout: 300000
     hikari.max-lifetime: 900000
